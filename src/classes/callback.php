@@ -12,7 +12,7 @@
 class Metrika
 {
     public $url = 'https://oauth.yandex.ru/';
-    public $url_api = 'https://api-metrika.yandex.ru/management/v1/';
+    public $url_api = 'https://api-metrika.yandex.ru/';
     public $client_id;
     public $state;
     public $errors;
@@ -150,7 +150,7 @@ class Metrika
     public function sendResponse($to, $headers, $params, $type, $pretty = 1)
     {
         $response = $this->post(
-            $this->url_api.$to.'?pretty='.$pretty.'&oauth_token='.$this->token,
+            $this->url_api.$to.'.json?pretty='.$pretty.'&oauth_token='.$this->token,
             $headers,
             $params,
             $type
@@ -193,6 +193,7 @@ class Metrika
                 }
                 fwrite($fp, $body);
                 fseek($fp, 0);
+                $curlOpt[CURLOPT_HTTPHEADER] = $headers;
                 $curlOpt[CURLOPT_PUT] = 1;
                 $curlOpt[CURLOPT_BINARYTRANSFER] = 1;
                 $curlOpt[CURLOPT_INFILE] = $fp; // file pointer
